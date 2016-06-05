@@ -1,0 +1,36 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.victoria.timothykasaga.gorret.Login">
+
+    <LinearLayout android:gravity="center" android:layout_gravity="bottom|center|left"
+        android:orientation="vertical" android:background="#ff3120f0"
+        android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textSize="25.0sp" android:textColor="#fffafefd"
+            android:padding="5.0dip" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_margin="10.0sp" android:text="Administrator login" />
+        <LinearLayout android:orientation="vertical" android:padding="5.0sp"
+            android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <EditText android:textSize="20.0sp" android:id="@+id/edtAUName"
+                android:background="#fffefcfc" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_margin="5.0sp"
+                android:hint="username" android:singleLine="true" />
+            <EditText android:textSize="20.0sp" android:id="@+id/edtAUpass"
+                android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0sp" android:hint="password" android:singleLine="true" android:inputType="textPassword" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="25.0sp" android:textColor="#fffefefe" android:id="@+id/btnLogin"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_margin="10.0sp" android:text="Login" />
+            <LinearLayout android:orientation="vertical" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="20.0sp" android:textColor="#fffefefe" android:id="@+id/btnfgPass"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:layout_margin="5.0sp" android:text="Forgot password" />
+                <TextView android:textSize="20.0sp" android:textColor="#fffefefe"
+                    android:id="@+id/btnCreate" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:layout_margin="5.0sp" android:text="Create account" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

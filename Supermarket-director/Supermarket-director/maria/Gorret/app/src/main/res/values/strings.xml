@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gorret</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <array name="services">
+        <item name="locate sm">Locate supermarket</item>
+        <item name="locate prdt">Locate product</item>
+        <item name="compare">Compare prices</item>
+    </array>
+    <array name="search">
+        <item name="home">Name</item>
+        <item name="locate sm">Location</item>
+        <item name="locate prdt">All</item>
+    </array>
+
+    <string name="title_activity_locate_supermarket">Map</string>
+    <string name="title_activity_create_account">Create account</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_supermarket_details">Supermarket_details</string>
+    <string name="title_activity_product_list">Product_list</string>
+    <string name="title_activity_modification_page">ModificationPage</string>
+    <string name="uronfloor">You are on floor:</string>
+
+</resources>

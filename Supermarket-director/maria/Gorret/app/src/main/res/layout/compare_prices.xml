@@ -1,0 +1,84 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff0d293e"
+    tools:context="com.victoria.timothykasaga.gorret.Compare_prices">
+
+    <LinearLayout android:orientation="vertical" android:background="#ff0d293e"
+        android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <EditText android:textSize="15.0sp" android:id="@+id/txt_pdt_name"
+                android:background="#ffcccccc" android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:hint="Product" android:singleLine="true" />
+            <Button android:id="@+id/btn_get_prodt" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:text="Search"
+                android:layout_weight="2"
+                android:textAlignment="viewStart"
+                android:textSize="15sp"
+                android:layout_marginTop="-5dp" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_marginLeft="5.0dip"
+            android:layout_marginRight="5.0dip">
+
+            <Spinner android:textColor="@color/white" android:id="@+id/spinChooseSm"
+                android:background="#ffcccccc" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:spinnerMode="dialog"
+                android:entries="@array/initailarray"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <ListView android:textColor="@color/white" android:id="@+id/list_selected"
+                android:background="#ffcccccc" android:layout_width="fill_parent" android:layout_weight="1"
+                android:layout_height="150.0dip"
+                android:layout_marginTop="8dp" />
+            <Button android:enabled="false" android:id="@+id/btn_Compare"
+                android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="2"
+                android:layout_margin="2.0dp" android:text="Compare" android:textAlignment="viewStart"
+                android:textSize="15sp"
+                android:layout_marginTop="-5dp" />
+        </LinearLayout>
+        <!--
+        <LinearLayout android:layout_gravity="center" android:orientation="horizontal"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip"
+            android:layout_marginRight="5.0dip" android:layout_marginBottom="-5.0dip">
+
+            <TextView android:textSize="25.0sp" android:textColor="#fff"
+                android:layout_width="fill_parent" android:layout_height="50.0dip"
+                android:text="Supermarket" android:layout_weight="1.0"
+                android:textAlignment="viewStart" />
+            <TextView android:textSize="25.0sp" android:textColor="#fff"
+                android:layout_width="fill_parent" android:layout_height="50.0dip"
+                android:text="Price" android:layout_weight="2.0" android:textAlignment="viewStart" />
+        </LinearLayout>
+        -->
+        <ScrollView android:background="#ff707277" android:layout_width="fill_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+
+
+            <LinearLayout android:background="#ff707277" android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:orientation="vertical" android:layout_margin="5.0dip">
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:layout_width="fill_parent"
+                    android:layout_height="280dp"
+                    android:id="@+id/mybargraph"
+                    >
+
+                </com.github.mikephil.charting.charts.BarChart>
+
+                <!-- <ListView android:id="@+id/list_compare"
+                    android:background="#ff50a6e7" android:layout_width="fill_parent"
+                    android:layout_height="350.0dip" android:textAlignment="viewStart"
+                     /> -->
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

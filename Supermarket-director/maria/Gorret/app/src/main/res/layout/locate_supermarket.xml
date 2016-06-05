@@ -1,0 +1,33 @@
+<LinearLayout android:orientation="vertical" android:background="#ff0d293e"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar"/>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_margin="5.0dip">
+        <TextView android:textSize="20.0sp" android:textColor="@color/white"
+            android:padding="5.0dip" android:layout_width="200.0dip"
+            android:layout_height="wrap_content" android:text="Search by:" />
+        <Spinner android:textSize="20.0sp" android:entries="@array/search"
+            android:id="@+id/selLocSpin" android:padding="5.0dip"
+            android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </LinearLayout>
+    <LinearLayout android:gravity="fill_horizontal" android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_margin="5.0dip">
+        <EditText android:textSize="20.0dip" android:textColor="@color/white"
+            android:id="@+id/txt_selected_loc" android:padding="5.0dip"
+            android:layout_width="200.0dip" android:layout_height="fill_parent"
+            android:singleLine="true" />
+        <Button android:id="@+id/btn_go" android:padding="5.0dip"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:text="Go" />
+    </LinearLayout>
+
+ <fragment android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent" android:id="@+id/map"
+    tools:context="com.victoria.timothykasaga.gorret.Locate_supermarket"
+    android:name="com.google.android.gms.maps.SupportMapFragment" />
+</LinearLayout>

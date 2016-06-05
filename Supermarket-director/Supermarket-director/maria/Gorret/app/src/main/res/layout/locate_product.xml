@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff0d293e"
+    tools:context="com.victoria.timothykasaga.gorret.Locate_product">
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText android:textSize="20.0sp" android:textColor="#000" android:layout_margin="5dp"
+            android:background="#ccc"
+            android:textColorHint="#000" android:padding="5.0dip"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:hint="Product name" android:singleLine="true" />
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_margin="5.0dip">
+            <Button android:textSize="20.0sp" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content"
+                android:text="Scan QR"
+                android:layout_weight="1"
+                android:id="@+id/btnScan" />
+            <Button android:textSize="20.0sp" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content"
+                android:text="Go"
+                android:layout_weight="1"
+                android:id="@+id/btngetLoc" />
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5.0dip">
+            <TextView android:textSize="20.0sp"
+                android:textColor="#fff"
+                android:padding="5.0dip"
+                android:layout_width="250.0dip"
+                android:layout_height="wrap_content"
+                android:text="@string/uronfloor" />
+            <TextView android:textSize="20.0sp"
+                android:textColor="#fff"
+                android:id="@+id/txt_cur_floor"
+                android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <TextView android:textSize="20.0sp" android:textColor="#fff"
+                android:padding="5.0dip" android:layout_width="250.0dip"
+                android:layout_height="wrap_content" android:text="Product is on floor:" />
+            <TextView android:textSize="20.0sp" android:textColor="#fff"
+                android:id="@+id/pdt_floor" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView android:textSize="20.0sp" android:textStyle="bold"
+            android:textColor="#fff" android:padding="5.0dip"
+            android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:text="Plan" android:textAlignment="center" />
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:layout_margin="5.0dip">
+            <ImageView android:background="#ffcccccc" android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/floorimage" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

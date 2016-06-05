@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:background="#ff0d293e" android:padding="5.0sp" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:padding="10.0sp" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:padding="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <TextView android:textSize="30.0sp" android:textColor="#fffffcfc" android:gravity="left" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Our services" />
+            <ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:dividerHeight="1.0dip" />
+            <Button android:id="@id/butadmin" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="Administration login page" android:layout_below="@id/listView" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

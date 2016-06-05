@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/toolbar" />
+    <LinearLayout android:gravity="center" android:orientation="horizontal"
+        android:background="#ff27390d" android:padding="5.0dip" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_above="@+id/map">
+        <RadioGroup android:orientation="horizontal" android:id="@+id/rg1"
+            android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <RadioButton android:textStyle="bold" android:textColor="#fffeffff"
+                android:id="@+id/rbtGPS" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:checked="true" android:text="Use GPS" />
+            <RadioButton android:textStyle="bold" android:textColor="#fffeffff"
+                android:id="@+id/rbtTouchMap" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Touch place" />
+        </RadioGroup>
+        <Button android:textSize="15.0dip" android:textStyle="bold"
+            android:id="@+id/butDets" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5.0dip" android:text="Store Details" />
+    </LinearLayout>
+    <fragment android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map" android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+</LinearLayout>

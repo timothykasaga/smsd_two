@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:icon="@android:drawable/ic_menu_manage" android:id="@+id/nav_Administration" android:title="Home Administration" />
+        <item android:icon="@drawable/location_found" android:id="@+id/nav_Loc_Supermarket" android:title="Locate Supermarket" />
+        <item android:icon="@drawable/ic_prodt" android:id="@+id/nav_Loc_Product" android:title="Locate Product" />
+        <item android:icon="@drawable/ic_compare" android:id="@+id/nav_Compare" android:title="Compare Prices" />
+    </group>
+    <item android:title="Support">
+        <menu>
+            <item android:icon="@android:drawable/ic_menu_help"
+                android:id="@+id/nav_Help"
+                android:title="Help" />
+            <item android:icon="@android:drawable/ic_menu_info_details"
+                android:id="@+id/nav_About" android:title="About Us" />
+        </menu>
+    </item>
+</menu>

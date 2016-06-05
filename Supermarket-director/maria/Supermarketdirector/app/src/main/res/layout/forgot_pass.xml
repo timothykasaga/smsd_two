@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:background="#ff3120f0" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textSize="20.0sp" android:textColor="@color/white" android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0sp" android:text="Help me reset my password" android:textAlignment="center" />
+        <EditText android:textSize="20.0sp" android:id="@id/editText" android:background="#ff77aacc" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="10.0dip" android:hint="Enter registered email" android:ems="10" android:inputType="textEmailAddress" />
+        <Button android:id="@id/button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="Reset password" />
+    </LinearLayout>
+</FrameLayout>

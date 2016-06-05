@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="#ff707277" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@color/white" android:id="@id/current_sp" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:text="@string/hello_blank_fragment" android:textAlignment="center" />
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <TextView android:textSize="20.0sp" android:textColor="@color/white" android:padding="5.0dip" android:layout_width="250.0dip" android:layout_height="wrap_content" android:text="You are on floor:" />
+            <TextView android:textSize="20.0sp" android:textColor="@color/white" android:id="@id/txt_cur_floor" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <EditText android:textSize="20.0sp" android:textColor="@color/white" android:textColorHint="@color/white" android:padding="5.0dip" android:layout_width="250.0dip" android:layout_height="wrap_content" android:hint="Product name" android:singleLine="true" />
+            <Button android:textSize="20.0sp" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Go" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <TextView android:textSize="20.0sp" android:textColor="@color/white" android:padding="5.0dip" android:layout_width="250.0dip" android:layout_height="wrap_content" android:text="Product is on floor:" />
+            <TextView android:textSize="20.0sp" android:textColor="@color/white" android:id="@id/pdt_floor" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@color/white" android:padding="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip" android:text="Plan" android:textAlignment="center" />
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip">
+            <ImageView android:background="#ffcccccc" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="#ff707277" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:background="#ff707277" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <EditText android:textSize="20.0sp" android:id="@id/txt_pdt_name" android:background="#ffcccccc" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip" android:hint="Product" android:singleLine="true" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginRight="5.0dip">
+            <Button android:id="@id/btn_get_prodt" android:layout_width="200.0dip" android:layout_height="50.0dip" android:text="Get supermarkets" android:textAlignment="viewStart" />
+            <Spinner android:textColor="@color/white" android:id="@id/spinChooseSm" android:background="#ffcccccc" android:layout_width="fill_parent" android:layout_height="43.0dip" android:spinnerMode="dialog" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="5.0dip">
+            <ListView android:textColor="@color/white" android:id="@id/list_selected" android:background="#ffcccccc" android:layout_width="200.0dip" android:layout_height="150.0dip" />
+            <Button android:enabled="false" android:id="@id/btn_Compare" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="-7.0dip" android:text="@string/compare" android:textAlignment="viewStart" />
+        </LinearLayout>
+        <LinearLayout android:layout_gravity="center" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="5.0dip" android:layout_marginRight="5.0dip" android:layout_marginBottom="-5.0dip">
+            <TextView android:textSize="25.0sp" android:textColor="@color/white" android:layout_width="fill_parent" android:layout_height="50.0dip" android:text="Supermarket" android:layout_weight="1.0" android:textAlignment="viewStart" />
+            <TextView android:textSize="25.0sp" android:textColor="@color/white" android:layout_width="fill_parent" android:layout_height="50.0dip" android:text="Price" android:layout_weight="1.0" android:textAlignment="viewStart" />
+        </LinearLayout>
+        <ScrollView android:background="#ff707277" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <LinearLayout android:background="#ff707277" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="5.0dip">
+                <ListView android:id="@id/txt_compare" android:background="#ff50a6e7" android:layout_width="fill_parent" android:layout_height="350.0dip" android:textAlignment="viewStart" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,15 @@
+<LinearLayout android:orientation="vertical" android:background="#ffcccccc" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/toolbar" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:background="#ffcccccc" android:padding="10.0sp" android:layout_width="fill_parent" android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <TextView android:textSize="25.0sp" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Registration" />
+        <EditText android:textSize="15.0sp" android:id="@+id/edtName" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Name" android:singleLine="true" />
+        <EditText android:textSize="15.0sp" android:id="@+id/edtEmail" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Email" android:ems="10" android:singleLine="true" android:inputType="textEmailAddress" />
+        <EditText android:textSize="15.0sp" android:id="@+id/edtUname" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Username" android:singleLine="true" />
+        <EditText android:textSize="15.0sp" android:id="@+id/edtPass" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Password" android:singleLine="true" android:inputType="textPassword" />
+        <EditText android:textSize="15.0sp" android:id="@+id/edtConPass" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Confirm password" android:singleLine="true" android:inputType="textPassword" />
+        <EditText android:textSize="15.0sp" android:id="@+id/edtTel" android:layout_width="fill_parent" android:layout_height="wrap_content" android:hint="Telephone" android:ems="10" android:singleLine="true" android:inputType="phone" />
+        <Button android:layout_gravity="center_horizontal" android:id="@+id/bSubmit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Submit" />
+    </LinearLayout>
+</LinearLayout>
