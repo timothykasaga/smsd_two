@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,7 +24,10 @@ import java.util.ArrayList;
 public class ServerRequests {
     public static final int CONNECTION_TIMEOUT = 15000;
     public static final int READ_TIMEOUT = 20000;
-    public static final String SERVER2 = "http://10.0.2.2:80/smsd/";
+    //public static final String SERVER2 = "http://timothykasaga.net16.net/";
+    public static final String SERVER2 = "http://192.168.101.12:80/";
+
+    //public static final String SERVER2 ="http://10.0.3.2/";
     ProgressDialog progressDialog;
     Context context;
     public ServerRequests(Context paramContext)
@@ -70,21 +74,24 @@ public class ServerRequests {
             new getAllSupermarketWithprodtAsnycTasks(compare_prices,product_name).execute();
     }
 
-    public void getImageURLpath(Locate_product locate_product,String supermkt_id, String user_floor, String user_cell) {
+    public void getImageURLpath(Locate_product locate_product,String supermkt_id, String user_floor,
+                                String user_cell,String productname) {
             progressDialog.show();
-            new getImageUrlAsnycTasks(locate_product,supermkt_id,user_floor,user_cell).execute();
+            new getImageUrlAsnycTasks(locate_product,supermkt_id,user_floor,user_cell,productname).execute();
     }
 
     //class fetchImageURl
     private class getImageUrlAsnycTasks extends AsyncTask<Void,Void,String>{
         Locate_product locate_product;
-        String supermkt_id; String user_floor; String user_cell;
+        String supermkt_id; String user_floor; String user_cell; String productName;
 
-        private getImageUrlAsnycTasks(Locate_product locate_product, String supermkt_id, String user_floor, String user_cell) {
+        private getImageUrlAsnycTasks(Locate_product locate_product, String supermkt_id, String user_floor, String user_cell
+                ,String productName) {
             this.locate_product = locate_product;
             this.supermkt_id = supermkt_id;
             this.user_floor = user_floor;
             this.user_cell = user_cell;
+            this.productName = productName;
         }
 
         @Override
@@ -93,16 +100,18 @@ public class ServerRequests {
             try {
                 StringBuilder content = new StringBuilder();
                 // URL url = new URL(SERVER+"registerUser.php");
-                URL url = new URL("http://10.0.3.2/smsd_locations/mapUserLocation.php");
+               // URL url = new URL("http://10.0.3.2/smsd_locations/mapUserLocation.php");
+                URL url = new URL(SERVER2+"smsd_locations/mapUserLocation.php");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setDoInput(true);
                 urlConnection.setDoOutput(true);
 
-                Uri.Builder builder = new Uri.Builder().appendQueryParameter("Supermarketid",supermkt_id)
-                        .appendQueryParameter("Userfloor",user_floor)
-                        .appendQueryParameter("Usercell",user_cell);
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("supermarket_id",supermkt_id)
+                        .appendQueryParameter("floor_no",user_floor)
+                        .appendQueryParameter("cell_no",user_cell)
+                        .appendQueryParameter("product_name",productName);
 
 
                 String query = builder.build().getEncodedQuery();
@@ -159,7 +168,8 @@ public class ServerRequests {
                try {
                    StringBuilder content = new StringBuilder();
                    // URL url = new URL(SERVER+"registerUser.php");
-                   URL url = new URL("http://10.0.3.2/smsd/getProductPrice.php");
+                  // URL url = new URL("http://10.0.3.2/smsd/getProductPrice.php");
+                   URL url = new URL(SERVER2+"smsd/getProductPrice.php");
                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                    urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                    urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -221,7 +231,8 @@ public class ServerRequests {
             try {
                 StringBuilder content = new StringBuilder();
                 // URL url = new URL(SERVER+"registerUser.php");
-                URL url = new URL("http://10.0.3.2/smsd/searchByLocation.php");
+               // URL url = new URL("http://10.0.3.2/smsd/searchByLocation.php");
+                URL url = new URL(SERVER2+"smsd/searchByLocation.php");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -263,6 +274,8 @@ public class ServerRequests {
             progressDialog.dismiss();
             if(!s.equals("")){
             locate_supermarket.continueExecution(s,locate_supermarket);
+            }else{
+                locate_supermarket.continueExecution("Could not retrive information check input",locate_supermarket);
             }
 
         }
@@ -283,7 +296,8 @@ public class ServerRequests {
             try {
                 StringBuilder content = new StringBuilder();
                 // URL url = new URL(SERVER+"registerUser.php");
-                URL url = new URL("http://10.0.3.2/smsd/searchAllSm.php");
+               // URL url = new URL("http://10.0.3.2/smsd/searchAllSm.php");
+                URL url = new URL(SERVER2+"smsd/searchAllSm.php");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -333,7 +347,8 @@ public class ServerRequests {
             try {
                 StringBuilder content = new StringBuilder();
                 // URL url = new URL(SERVER+"registerUser.php");
-                URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+               // URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+                URL url = new URL(SERVER2+"smsd/searchByName.php");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -394,7 +409,8 @@ public class ServerRequests {
             try {
                 StringBuilder content = new StringBuilder();
                 // URL url = new URL(SERVER+"registerUser.php");
-                URL url = new URL("http://10.0.3.2/smsd/registerUser.php");
+                //URL url = new URL("http://10.0.3.2/smsd/registerUser.php");
+                URL url = new URL(SERVER2+"smsd/registerUser.php");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -455,7 +471,8 @@ public class ServerRequests {
         protected String doInBackground(Void... params) {
             String res = "";
             try {
-                URL url = new URL("http://10.0.3.2/smsd/retrive.php");
+                //URL url = new URL("http://10.0.3.2/smsd/retrive.php");
+                URL url = new URL(SERVER2+"smsd/retrive.php");
                 URLConnection urlConnection = url.openConnection();
 
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
@@ -517,7 +534,7 @@ public class ServerRequests {
             StringBuilder content = new StringBuilder();
             String result = "";
             try {
-                JSONArray listArray = new JSONArray();
+               /* JSONArray listArray = new JSONArray();
                 Product product;
                 for (int i = 0; i < productArrayList.size(); i++) {
                     product = productArrayList.get(i);
@@ -529,10 +546,30 @@ public class ServerRequests {
                     prodtArray.put(4, product.section_name);
                     listArray.put(i,prodtArray);
                 }
+
+                */
+
+                JSONObject  listArray = new JSONObject();
+                Product product;
+                int prodt_no = 0;
+                for (int i = 0; i < productArrayList.size(); i++) {
+                    product = productArrayList.get(i);
+                    JSONObject prodtArray = new JSONObject();
+                    prodtArray.put("name", product.name);
+                    prodtArray.put("id", product.prodt_id);
+                    prodtArray.put("cost", product.unit_cost);
+                    prodtArray.put("units", product.units);
+                    prodtArray.put("sec", product.section_name);
+                    listArray.put(i+"",prodtArray);
+                    prodt_no++;
+                }
+
+
                 String strProdtList = listArray.toString();
 
                 // URL url = new URL(SERVER+"storeDetails.php");
-                URL url = new URL("http://10.0.3.2/smsd/storeDetails.php");
+                //URL url = new URL("http://10.0.3.2/smsd/storeDetails.php");
+                URL url = new URL(SERVER2+"smsd/storeDetails.php");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                 urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -548,7 +585,8 @@ public class ServerRequests {
                          .appendQueryParameter("Lat", detailsPack.getD_lat())
                         .appendQueryParameter("Log", detailsPack.getD_log())
                          .appendQueryParameter("Admin", detailsPack.getAdmin())
-                        .appendQueryParameter("Productlist", strProdtList);
+                        .appendQueryParameter("Productlist", strProdtList)
+                        .appendQueryParameter("Product_num", String.valueOf(prodt_no));
 
 
                 String query = builder.build().getEncodedQuery();

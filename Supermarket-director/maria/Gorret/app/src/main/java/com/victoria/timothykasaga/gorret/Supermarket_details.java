@@ -1,5 +1,6 @@
 package com.victoria.timothykasaga.gorret;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -193,9 +194,43 @@ public class Supermarket_details extends AppCompatActivity {
 
     public void continueExecution(String res, Supermarket_details supermarket_details) {
         if(res.equals("success"+"\n")){
-            Toast.makeText(supermarket_details.getApplicationContext(),"Data saved server response: "+res,Toast.LENGTH_SHORT).show();
+           // Toast.makeText(supermarket_details.getApplicationContext(),"Data saved server response: "+res,Toast.LENGTH_SHORT).show();
+            final Dialog dialog = new Dialog(Supermarket_details.this);
+            dialog.setContentView(R.layout.helpdialog);
+            dialog.setTitle("Smart shopping mate");
+            final TextView text = (TextView)dialog.findViewById(R.id.txtHelp);
+            text.setText("Data saved server response: "+res+
+                    "\nPlease go to link below to finish registration\n" +
+                    "http://timothykasaga.net16.net/smsd_locations/home.php");
+            Button cancel = (Button)dialog.findViewById(R.id.btnHelp);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            Intent intent = new Intent(Supermarket_details.this, MainActivity.class);
+            startActivity(intent);
         }else{
-            Toast.makeText(supermarket_details.getApplicationContext(),"Data not saved server response: "+res,Toast.LENGTH_LONG).show();
+            final Dialog dialog = new Dialog(Supermarket_details.this);
+            dialog.setContentView(R.layout.helpdialog);
+            dialog.setTitle("Smart shopping mate");
+            final TextView text = (TextView)dialog.findViewById(R.id.txtHelp);
+            text.setText("Data saved server response: "+res+
+                    "\nPlease go to link below to finish registration\n" +
+                    "http://timothykasaga.net16.net/smsd_locations/home.php");
+            Button cancel = (Button)dialog.findViewById(R.id.btnHelp);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            Intent intent = new Intent(Supermarket_details.this, MainActivity.class);
+            startActivity(intent);
+           // Toast.makeText(supermarket_details.getApplicationContext(),"Data not saved server response: "+res,Toast.LENGTH_LONG).show();
 
         }
     }

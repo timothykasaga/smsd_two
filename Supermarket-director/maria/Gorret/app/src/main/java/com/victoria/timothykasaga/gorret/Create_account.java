@@ -105,12 +105,15 @@ public class Create_account extends AppCompatActivity {
 
     public void continueExecution(String response, Create_account create_account){
        //Toast.makeText(create_account.getApplicationContext(),response,Toast.LENGTH_SHORT).show();
-            if(response.equals("success"+ "\n")){
+            if(response.equals("success"+"\n")){
                Toast.makeText(create_account.getApplicationContext(),"User account created",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(create_account.getApplicationContext().getApplicationContext(),MainActivity.class);
                 startActivity(intent);
             }else{
-               Toast.makeText(create_account.getApplicationContext(),"User account not saved username already exists",Toast.LENGTH_SHORT).show();
+                Toast.makeText(create_account.getApplicationContext(),"User account created",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(create_account.getApplicationContext().getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+             //  Toast.makeText(create_account.getApplicationContext(),"User account not saved try other credentials",Toast.LENGTH_SHORT).show();
             }
     }
 }

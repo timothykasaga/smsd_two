@@ -1,13 +1,16 @@
 package com.victoria.timothykasaga.gorret;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +25,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Locate_supermarket extends FragmentActivity {
     private String criteria;
     Button go;
     String result = null;
-    EditText selected_loc;
+    Spinner selected_loc;
     Spinner spinner;
     Toolbar toolbar;
+    ArrayList<DetailsPack> detailsPacks = new ArrayList<>();
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     @Override
@@ -37,35 +44,19 @@ public class Locate_supermarket extends FragmentActivity {
         setContentView(R.layout.locate_supermarket);
         initliaze();
         setUpMapIfNeeded();
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
-                    case 0:{
-                        selected_loc.setEnabled(true);
-                        break;
-                    }
-                    case 1:{
-                        selected_loc.setEnabled(true);
-                        break;
-                    }
-                    case 2:{
-                        selected_loc.setEnabled(false);
-                        break;
-                    }
-                }
-                criteria = adapterView.getItemAtPosition(i).toString();
-            }
+        //Get All supermarekts
+        ServerRequests serverRequests = new ServerRequests(Locate_supermarket.this);
+        mMap.clear();
+        serverRequests.searchAllSm(Locate_supermarket.this);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        //Get All supermarekts
 
-            }
-        });
+
 
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 switch (criteria){
                     case "Name":{
                         if(!selected_loc.getText().toString().equals("")){
@@ -96,7 +87,7 @@ public class Locate_supermarket extends FragmentActivity {
                         serverRequests.searchAllSm(Locate_supermarket.this);
                         break;
                     }
-                }
+                }*/
             }
         });
     }
@@ -180,7 +171,7 @@ public class Locate_supermarket extends FragmentActivity {
     public void initliaze(){
         spinner = ((Spinner)findViewById(R.id.selLocSpin));
         go = ((Button)findViewById(R.id.btn_go));
-        selected_loc = ((EditText)findViewById(R.id.txt_selected_loc));
+        selected_loc = (Spinner) findViewById(R.id.txt_selected_loc);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Locate supermarket");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -196,33 +187,174 @@ public class Locate_supermarket extends FragmentActivity {
     }
 
     public void continueExecution(String s, Locate_supermarket locate_supermarket) {
-        if(!s.equals("fail")){
+
+       //- Toast.makeText(locate_supermarket.getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+        if(!s.equals("Could not retrive information check input")){
            // Toast.makeText(locate_supermarket.getApplicationContext(),s,Toast.LENGTH_SHORT).show();
-            try
-            {
-                JSONArray paramAnonymousView = new JSONArray(s);
-                int i = 0;
-                while (i < paramAnonymousView.length())
-                {
-                    JSONObject localObject2 = paramAnonymousView.getJSONObject(i);
-                    double d1 = localObject2.getDouble("lat");
-                    double d2 = localObject2.getDouble("log");
-                    String localObject1 = String.valueOf(localObject2.getString("contact"));
-                    String localObject3 = String.valueOf(localObject2.getString("sname"));
-                    LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(d1)), Double.parseDouble(String.valueOf(d2)));
-                    MarkerOptions markerOptions  = new MarkerOptions().position(latLng).title(localObject3);
-                    markerOptions.snippet(localObject1);
-                    mMap.addMarker(markerOptions);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    i += 1;
+
+
+            if(s.equals("fail")){
+                Toast.makeText(locate_supermarket.getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+            }else {
+
+                try {
+                    JSONArray paramAnonymousView = new JSONArray(s);
+                    int i = 0;
+
+                    while (i < paramAnonymousView.length()) {
+                        JSONObject localObject2 = paramAnonymousView.getJSONObject(i);
+                        double d1 = localObject2.getDouble("lat");
+                        double d2 = localObject2.getDouble("log");
+                        String localObject1 = String.valueOf(localObject2.getString("contact"));
+                        String localObject3 = String.valueOf(localObject2.getString("sname"));
+                        String location = String.valueOf(localObject2.getString("location"));
+
+
+                        detailsPacks.add(new DetailsPack(localObject3,location,"","",localObject1,"",d1+"",d2+"",""));
+
+                        //to be populated depending on selection
+
+                       /* LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(d1)), Double.parseDouble(String.valueOf(d2)));
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(localObject3);
+                        markerOptions.snippet(localObject1);
+                        mMap.addMarker(markerOptions);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)); */
+
+
+                        //end adding markers
+                        i += 1;
+                    }
+
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                            ((TextView) adapterView.getChildAt(0)).setTextSize(20);
+                            switch (i){
+                                case 0:{
+                                    selected_loc.setEnabled(true);
+
+                                    ArrayList<String> arrayList = new ArrayList<String>();
+                                    if(detailsPacks.size() != 0){
+                                        for(i = 0;i<detailsPacks.size();i++){
+                                            if(!arrayList.contains(detailsPacks.get(i).getS_name()))
+                                            arrayList.add(detailsPacks.get(i).getS_name());
+                                        }
+                                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                                                R.layout.support_simple_spinner_dropdown_item,arrayList);
+                                        selected_loc.setAdapter(arrayAdapter);
+                                    }
+                                    selected_loc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                            ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                                            ((TextView) adapterView.getChildAt(0)).setTextSize(20);
+                                            mMap.clear();
+                                            for(int j = 0;j<detailsPacks.size();j++){
+
+                                                if(detailsPacks.get(j).getS_name().equals(adapterView.getItemAtPosition(i).toString())) {
+
+                                                    LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(detailsPacks.get(j).getD_lat())),
+                                                            Double.parseDouble(String.valueOf(detailsPacks.get(j).getD_log())));
+                                                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(detailsPacks.get(j).getS_name());
+                                                    markerOptions.snippet(detailsPacks.get(j).getS_location());
+                                                    mMap.addMarker(markerOptions);
+                                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                }
+                                            }
+
+
+
+
+
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                        }
+                                    });
+                                    break;
+                                }
+                                case 1:{
+                                    selected_loc.setEnabled(true);
+                                    ArrayList<String> arrayList = new ArrayList<String>();
+                                    if(detailsPacks.size() != 0){
+                                        for(i = 0;i<detailsPacks.size();i++){
+                                            if(!arrayList.contains(detailsPacks.get(i).getS_location()))
+                                            arrayList.add(detailsPacks.get(i).getS_location());
+                                        }
+                                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                                                R.layout.support_simple_spinner_dropdown_item,arrayList);
+                                        selected_loc.setAdapter(arrayAdapter);
+                                    }
+                                    selected_loc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                            ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                                            ((TextView) adapterView.getChildAt(0)).setTextSize(20);
+                                            mMap.clear();
+                                            for(int j = 0;j<detailsPacks.size();j++){
+
+                                                if(detailsPacks.get(j).getS_location().equals(adapterView.getItemAtPosition(i).toString())) {
+
+                                                    LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(detailsPacks.get(j).getD_lat())),
+                                                            Double.parseDouble(String.valueOf(detailsPacks.get(j).getD_log())));
+                                                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(detailsPacks.get(j).getS_name());
+                                                    markerOptions.snippet(detailsPacks.get(j).getS_location());
+                                                    mMap.addMarker(markerOptions);
+                                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                }
+                                            }
+
+
+
+
+
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                        }
+                                    });
+                                    break;
+                                }
+                                case 2:{
+                                    selected_loc.setEnabled(false);
+                                    mMap.clear();
+                                    for(int j = 0;j<detailsPacks.size();j++){
+
+
+                                            LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(detailsPacks.get(j).getD_lat())),
+                                                    Double.parseDouble(String.valueOf(detailsPacks.get(j).getD_log())));
+                                            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(detailsPacks.get(j).getS_name());
+                                            markerOptions.snippet(detailsPacks.get(j).getS_location());
+                                            mMap.addMarker(markerOptions);
+                                            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                                    }
+                                    break;
+                                }
+                            }
+                           // criteria = adapterView.getItemAtPosition(i).toString();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+
+                } catch (Exception paramAnonymousView) {
+                    paramAnonymousView.printStackTrace();
+
                 }
 
             }
-            catch (Exception paramAnonymousView)
-            {
-                paramAnonymousView.printStackTrace();
 
-            }
+
         }else{
             Toast.makeText(locate_supermarket.getApplicationContext(),s,Toast.LENGTH_SHORT).show();
 

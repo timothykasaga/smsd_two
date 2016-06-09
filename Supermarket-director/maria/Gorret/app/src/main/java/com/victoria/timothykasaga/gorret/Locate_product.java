@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -24,9 +27,9 @@ import org.json.JSONObject;
  */
 public class Locate_product extends Fragment {
     String toast;
-    String supermkt_id = "x";
-    String user_floor= "x";
-    String user_cell= "x";
+    String supermkt_id = "";
+    String user_floor= "";
+    String user_cell= "";
     public Locate_product() {
         // Required empty public constructor
 
@@ -44,6 +47,7 @@ public class Locate_product extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.locate_product, container, false);
         ImageView imageView = (ImageView)view.findViewById(R.id.floorimage);
+        final EditText pdt_name = (EditText) view.findViewById(R.id.edtproductname);
         Button bgetLoc = (Button) view.findViewById(R.id.btnScan);
         Button bfetchLoc = (Button) view.findViewById(R.id.btngetLoc);
         bfetchLoc.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +56,16 @@ public class Locate_product extends Fragment {
                 if(user_cell.equals("") || user_floor.equals("") || supermkt_id.equals("")){
                     Toast.makeText(getActivity(),"Please scan QR code", Toast.LENGTH_SHORT).show();
                 }else{
+
+                    String pname = pdt_name.getText().toString();
+                    if(pname.equals(""))
+                    {
+                        Toast.makeText(getActivity(),"Please Enter product name", Toast.LENGTH_SHORT).show();
+                    }else{
                     ServerRequests serverRequests = new ServerRequests(getActivity());
-                    serverRequests.getImageURLpath(Locate_product.this,supermkt_id,user_floor,user_cell);
+                    serverRequests.getImageURLpath(Locate_product.this,supermkt_id,user_floor,user_cell,pname);
+                    }
+
                 }
             }
         });
@@ -82,7 +94,14 @@ public class Locate_product extends Fragment {
                 displayToast();
                // Toast.makeText(getActivity(),toast,Toast.LENGTH_SHORT).show();
             } else {
-                toast = "Scanned from fragment: " + result.getContents();
+               // toast = "Scanned from fragment: " + result.getContents();
+                String lines[] = result.getContents().split("\\r?\\n");
+                supermkt_id = lines[0];
+                user_floor = lines[1];
+                user_cell = lines[2];
+                toast = "Supermarket id: "+supermkt_id+"\n"+
+                        "User floor: "+user_floor+"\n"+
+                        "Cell id: "+user_cell;
                 displayToast();
                //Toast.makeText(getActivity(),toast,Toast.LENGTH_SHORT).show();
             }
@@ -104,19 +123,51 @@ public class Locate_product extends Fragment {
 
 
     public void continueExecution(String s, Locate_product locate_product) {
-        String filename;
-        try {
-            JSONObject jsonObject = new JSONObject(s);
-           // if(jsonObject.)
-        } catch (Exception e) {
-            e.printStackTrace();
+       Toast.makeText(locate_product.getActivity(),s+"What we received",Toast.LENGTH_SHORT).show();
+        if(s.equals("not existent"+"\n")){
+            Toast.makeText(locate_product.getActivity(),"Product not found",Toast.LENGTH_SHORT).show();
+        }else{
+            int loader = R.drawable.home;
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                if(jsonObject.has("path")){
+                    String path  = jsonObject.getString("path");
+                    int prodt_floor = Integer.parseInt(jsonObject.getString("product_floor"));
+                    int user_floor = Integer.parseInt(jsonObject.getString("user_floor"));
+                    ImageLoader imgLoader = new ImageLoader(locate_product.getActivity());
+                    imgLoader.DisplayImage("http://192.168.101.12:80/smsd_locations/testlocateuser/"+path, loader,
+                            (ImageView) locate_product.getView().findViewById(R.id.floorimage));
+                    if(prodt_floor == user_floor){
+                        TextView txtpdt = (TextView) locate_product.getView().findViewById(R.id.pdt_floor);
+                        TextView simillar = (TextView) locate_product.getView().findViewById(R.id.ur_txt);
+                        TextView urpdt = (TextView) locate_product.getView().findViewById(R.id.txt_cur_floor);
+                        TextView pdttxt = (TextView) locate_product.getView().findViewById(R.id.pdt_txt);
+                        urpdt.setVisibility(View.INVISIBLE);
+                        simillar.setText("Product is here");
+                       // txtpdt.setText(String.valueOf(prodt_floor));
+                        pdttxt.setVisibility(View.INVISIBLE);
+                        txtpdt.setVisibility(View.INVISIBLE);
+                    }else{
+                        TextView txtpdt = (TextView) locate_product.getView().findViewById(R.id.pdt_floor);
+                        TextView urpdt = (TextView) locate_product.getView().findViewById(R.id.txt_cur_floor);
+                        TextView simillar = (TextView) locate_product.getView().findViewById(R.id.ur_txt);
+                        TextView pdttxt = (TextView) locate_product.getView().findViewById(R.id.pdt_txt);
+                        simillar.setText("Your floor no.");
+                        txtpdt.setVisibility(View.VISIBLE);
+                        pdttxt.setVisibility(View.VISIBLE);
+                        txtpdt.setText(String.valueOf(prodt_floor));
+                        urpdt.setText(String.valueOf(user_floor));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
 
-        Toast.makeText(locate_product.getActivity(),s,Toast.LENGTH_SHORT).show();
-        int loader = R.drawable.home;
-        ImageLoader imgLoader = new ImageLoader(locate_product.getActivity());
-        imgLoader.DisplayImage("http://10.0.3.2/smsd_locations/testlocateuser/"+s, loader,
-                (ImageView) locate_product.getView().findViewById(R.id.floorimage));
+
+
 
 
     }
