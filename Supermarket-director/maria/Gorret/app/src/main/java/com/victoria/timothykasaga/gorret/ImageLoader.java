@@ -162,6 +162,7 @@ public class ImageLoader {
                 photoToLoad.imageView.setImageBitmap(bitmap);
             else
                 photoToLoad.imageView.setImageResource(stub_id);
+            clearCache();
         }
     }
  

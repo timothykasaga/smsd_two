@@ -123,7 +123,7 @@ public class Locate_product extends Fragment {
 
 
     public void continueExecution(String s, Locate_product locate_product) {
-       Toast.makeText(locate_product.getActivity(),s+"What we received",Toast.LENGTH_SHORT).show();
+    //  Toast.makeText(locate_product.getActivity(),s+"What we received",Toast.LENGTH_SHORT).show();
         if(s.equals("not existent"+"\n")){
             Toast.makeText(locate_product.getActivity(),"Product not found",Toast.LENGTH_SHORT).show();
         }else{
@@ -131,7 +131,7 @@ public class Locate_product extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 if(jsonObject.has("path")){
-                    String path  = jsonObject.getString("path");
+                    final String path  = jsonObject.getString("path");
                     int prodt_floor = Integer.parseInt(jsonObject.getString("product_floor"));
                     int user_floor = Integer.parseInt(jsonObject.getString("user_floor"));
                     ImageLoader imgLoader = new ImageLoader(locate_product.getActivity());
@@ -155,10 +155,25 @@ public class Locate_product extends Fragment {
                         simillar.setText("Your floor no.");
                         txtpdt.setVisibility(View.VISIBLE);
                         pdttxt.setVisibility(View.VISIBLE);
+                        urpdt.setVisibility(View.VISIBLE);
                         txtpdt.setText(String.valueOf(prodt_floor));
                         urpdt.setText(String.valueOf(user_floor));
                     }
+                    ImageView img = (ImageView) locate_product.getView().findViewById(R.id.floorimage);
+                    img.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(),Display_plan.class);
+                            intent.putExtra("path",path);
+                            startActivity(intent);
+                        }
+                    });
+
+
                 }
+
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

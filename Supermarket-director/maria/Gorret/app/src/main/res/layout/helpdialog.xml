@@ -8,11 +8,16 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
     <TextView
+        android:layout_margin="5dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="5dp"
+        android:textSize="20sp"
+        android:text="test"
+        android:textColor="#2A00FF"
         android:id="@+id/txtHelp"/>
         <Button
             android:layout_width="wrap_content"

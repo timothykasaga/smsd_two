@@ -51,45 +51,6 @@ public class Locate_supermarket extends FragmentActivity {
 
         //Get All supermarekts
 
-
-
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*
-                switch (criteria){
-                    case "Name":{
-                        if(!selected_loc.getText().toString().equals("")){
-                            String supermktname = selected_loc.getText().toString();
-                            ServerRequests serverRequests = new ServerRequests(Locate_supermarket.this);
-                            mMap.clear();
-                            serverRequests.searchBySmName(supermktname,Locate_supermarket.this);
-
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Please enter Supermarket name",Toast.LENGTH_SHORT).show();
-                        }
-                     break;
-                    }
-                    case "Location":{
-                        if(!selected_loc.getText().toString().equals("")){
-                        String location = selected_loc.getText().toString();
-                        ServerRequests serverRequests = new ServerRequests(Locate_supermarket.this);
-                        mMap.clear();
-                        serverRequests.searchBySmLocation(location, Locate_supermarket.this);
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Please enter location",Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    }
-                    case "All":{
-                        ServerRequests serverRequests = new ServerRequests(Locate_supermarket.this);
-                        mMap.clear();
-                        serverRequests.searchAllSm(Locate_supermarket.this);
-                        break;
-                    }
-                }*/
-            }
-        });
     }
 
     @Override
@@ -133,7 +94,7 @@ public class Locate_supermarket extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+      //  mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
@@ -151,10 +112,10 @@ public class Locate_supermarket extends FragmentActivity {
 
             }
         });
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(0,0)));
+      LatLng lat = new LatLng(0.3476,32.5825);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat,10f));
        mMap.setMyLocationEnabled(true);
-       mMap.setTrafficEnabled(true);
+       mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
         {
@@ -170,7 +131,7 @@ public class Locate_supermarket extends FragmentActivity {
 
     public void initliaze(){
         spinner = ((Spinner)findViewById(R.id.selLocSpin));
-        go = ((Button)findViewById(R.id.btn_go));
+
         selected_loc = (Spinner) findViewById(R.id.txt_selected_loc);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Locate supermarket");
@@ -224,7 +185,7 @@ public class Locate_supermarket extends FragmentActivity {
                         //end adding markers
                         i += 1;
                     }
-
+                    spinner.setSelection(0);
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -303,7 +264,7 @@ public class Locate_supermarket extends FragmentActivity {
                                                     MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(detailsPacks.get(j).getS_name());
                                                     markerOptions.snippet(detailsPacks.get(j).getS_location());
                                                     mMap.addMarker(markerOptions);
-                                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                                                 }
                                             }
 

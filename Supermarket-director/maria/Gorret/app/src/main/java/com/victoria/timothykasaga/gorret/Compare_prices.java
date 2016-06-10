@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -234,7 +235,7 @@ public class Compare_prices extends Fragment {
                           }
 
 
-                          if(listSelected.getCount() != 0){
+                          if(listSelected.getCount() != 0 && listSelected.getCount() <= 3){
                           for (int counter = 0; counter < listSelected.getCount(); counter++) {
                               for (int counttwo = 0; counttwo < supermarket_products.size(); counttwo++) {
                                   if (listSelected.getItemAtPosition(counter).equals(supermarket_products.get(counttwo).supermarket_name
@@ -264,7 +265,12 @@ public class Compare_prices extends Fragment {
                               BarDataSet dataset = new BarDataSet(entries, "Product price");
                               BarData data = new BarData(labels, dataset);
                               barChart.setData(data);
-                              barChart.setDescription("Price Comparison");
+                              barChart.setDescription("");
+                              XAxis xAxis = barChart.getXAxis();
+                              xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                              xAxis.setDrawAxisLine(false);
+                              xAxis.setDrawGridLines(false);
+                              xAxis.setLabelsToSkip(0);
 
                               //end bargraph trial
 
@@ -276,7 +282,7 @@ public class Compare_prices extends Fragment {
                            list_compare.setAdapter(listAdapter); */
                           //end test code
                       }else {
-                              Toast.makeText(getActivity(), "Please select supermarkets", Toast.LENGTH_LONG).show();
+                              Toast.makeText(getActivity(), "Please choose 1-3 supermarkets for best results", Toast.LENGTH_LONG).show();
                           }
                       }
                   });
@@ -294,7 +300,7 @@ public class Compare_prices extends Fragment {
           }
 
       } else{
-          Toast.makeText(compare_prices.getActivity(),s,Toast.LENGTH_SHORT).show();
+          Toast.makeText(compare_prices.getActivity(),"Product could not be found",Toast.LENGTH_SHORT).show();
       }
     }
 }

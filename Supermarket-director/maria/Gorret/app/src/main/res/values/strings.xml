@@ -24,6 +24,7 @@
     <string name="title_activity_supermarket_details">Supermarket_details</string>
     <string name="title_activity_product_list">Product_list</string>
     <string name="title_activity_modification_page">ModificationPage</string>
-    <string name="uronfloor">You are on floor:</string>
+    <string name="uronfloor">You\'re on floor:</string>
+    <string name="title_activity_display_plan">Display_plan</string>
 
 </resources>

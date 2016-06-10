@@ -225,11 +225,12 @@ public class Supermarket_details extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
+                    Intent intent = new Intent(Supermarket_details.this, MainActivity.class);
+                    startActivity(intent);
                 }
             });
             dialog.show();
-            Intent intent = new Intent(Supermarket_details.this, MainActivity.class);
-            startActivity(intent);
+
            // Toast.makeText(supermarket_details.getApplicationContext(),"Data not saved server response: "+res,Toast.LENGTH_LONG).show();
 
         }

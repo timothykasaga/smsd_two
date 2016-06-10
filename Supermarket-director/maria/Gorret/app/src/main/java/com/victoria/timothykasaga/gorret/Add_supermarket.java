@@ -88,8 +88,9 @@ public class Add_supermarket extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMapType(4);
-        map.setMyLocationEnabled(true);
+        //map.setMyLocationEnabled(true);
         map.setTrafficEnabled(true);
+        map.getUiSettings().setMyLocationButtonEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
         mapLatLng = new LatLng(-34.0D, 151.0D);
         map.addMarker(new MarkerOptions().position(mapLatLng).title("Marker in Sydney"));

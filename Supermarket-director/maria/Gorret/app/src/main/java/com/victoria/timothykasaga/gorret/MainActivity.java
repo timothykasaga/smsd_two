@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new Initial());
                         fragmentTransaction.commit();
-                        getSupportActionBar().setTitle("Home administration");
+                        getSupportActionBar().setTitle("Smart shopping mate");
                         item.setChecked(true);
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         break;
