@@ -135,7 +135,7 @@ public class Locate_product extends Fragment {
                     int prodt_floor = Integer.parseInt(jsonObject.getString("product_floor"));
                     int user_floor = Integer.parseInt(jsonObject.getString("user_floor"));
                     ImageLoader imgLoader = new ImageLoader(locate_product.getActivity());
-                    imgLoader.DisplayImage("http://192.168.101.12:80/smsd_locations/testlocateuser/"+path, loader,
+                    imgLoader.DisplayImage("http://192.168.43.73:80/smsd_locations/testlocateuser/"+path, loader,
                             (ImageView) locate_product.getView().findViewById(R.id.floorimage));
                     if(prodt_floor == user_floor){
                         TextView txtpdt = (TextView) locate_product.getView().findViewById(R.id.pdt_floor);

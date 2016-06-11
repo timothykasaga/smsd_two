@@ -25,7 +25,7 @@ public class ServerRequests {
     public static final int CONNECTION_TIMEOUT = 15000;
     public static final int READ_TIMEOUT = 20000;
     //public static final String SERVER2 = "http://timothykasaga.net16.net/";
-    public static final String SERVER2 = "http://192.168.101.12:80/";
+    public static final String SERVER2 = "http://192.168.43.73:80/";
 
     //public static final String SERVER2 ="http://10.0.3.2/";
     ProgressDialog progressDialog;

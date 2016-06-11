@@ -16,6 +16,7 @@
         <item name="home">Name</item>
         <item name="locate sm">Location</item>
         <item name="locate prdt">All</item>
+        <item name="least distance">Nearest</item>
     </array>
 
     <string name="title_activity_locate_supermarket">Map</string>

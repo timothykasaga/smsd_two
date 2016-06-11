@@ -20,7 +20,7 @@ public class Display_plan extends AppCompatActivity {
         String path = getIntent().getStringExtra("path");
         int loader = R.drawable.home;
         ImageLoader imgLoader = new ImageLoader(this);
-        imgLoader.DisplayImage("http://192.168.101.12:80/smsd_locations/testlocateuser/"+path, loader,
+        imgLoader.DisplayImage("http://192.168.43.73:80/smsd_locations/testlocateuser/"+path, loader,
                 imageView);
     }
 

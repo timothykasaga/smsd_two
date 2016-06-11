@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:id="@+id/imgSuper" android:background="@drawable/ic_super"
-        android:layout_width="100.0dip" android:layout_height="100.0dip" />
+  xmlns:android="http://schemas.android.com/apk/res/android" android:padding="10dp" android:layout_centerVertical="true">
+    <ImageView android:id="@+id/imgSuper" android:src="@drawable/supermarker"
+        android:layout_width="60.0dip" android:layout_height="60.0dip" />
     <LinearLayout android:gravity="center" android:orientation="vertical"
-        android:layout_width="250.0dip" android:layout_height="100.0dip">
+        android:padding="10dp"
+        android:layout_width="250.0dip" android:layout_height="60.0dip">
         <TextView android:textSize="15.0dip" android:textStyle="bold"
             android:id="@+id/tvInfoName" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:text="Helllo" />
+            android:textColor="#2A00FF"
+            android:textAllCaps="true"
+            android:layout_height="wrap_content" android:text="Hello" />
         <TextView android:textSize="15.0dip" android:textStyle="bold"
+            android:textColor="#2A00FF"
+            android:textAllCaps="true"
             android:id="@+id/tvInfoContact" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:text="Helllo" />
+            android:layout_height="wrap_content" android:text="Hello" />
     </LinearLayout>
 </LinearLayout>

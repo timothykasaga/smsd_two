@@ -1,7 +1,15 @@
 package com.victoria.timothykasaga.gorret;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,16 +23,27 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.SphericalUtil;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +54,13 @@ public class Locate_supermarket extends FragmentActivity {
     Spinner selected_loc;
     Spinner spinner;
     Toolbar toolbar;
+    //From -> the first coordinate from where we need to calculate the distance
+    private double fromLongitude;
+    private double fromLatitude;
+
+    //To -> the second coordinate to where we need to calculate the distance
+    private double toLongitude;
+    private double toLatitude;
     ArrayList<DetailsPack> detailsPacks = new ArrayList<>();
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -173,16 +199,6 @@ public class Locate_supermarket extends FragmentActivity {
 
                         detailsPacks.add(new DetailsPack(localObject3,location,"","",localObject1,"",d1+"",d2+"",""));
 
-                        //to be populated depending on selection
-
-                       /* LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(d1)), Double.parseDouble(String.valueOf(d2)));
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(localObject3);
-                        markerOptions.snippet(localObject1);
-                        mMap.addMarker(markerOptions);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)); */
-
-
-                        //end adding markers
                         i += 1;
                     }
                     spinner.setSelection(0);
@@ -297,6 +313,44 @@ public class Locate_supermarket extends FragmentActivity {
                                     }
                                     break;
                                 }
+                                case 3:{
+                                    mMap.clear();
+                                    selected_loc.setEnabled(false);
+                                    LatLng userLocation = getUserLocation();
+                                    LatLng minLocatedSupermarketLocation = null;
+                                    String nearestSupermarket = "";
+                                    double minDistance = 0;
+                                    int counter = 0;
+                                    for(int x = 0;x<detailsPacks.size();x++){
+                                        LatLng SupermarketLatLng = new LatLng(Double.parseDouble(String.valueOf(detailsPacks.get(x).getD_lat())),
+                                                Double.parseDouble(String.valueOf(detailsPacks.get(x).getD_log())));
+
+                                        //Calculating the distance in meters
+                                        double distance = SphericalUtil.computeDistanceBetween(userLocation, SupermarketLatLng);
+                                        if(counter == 0){
+                                            minDistance = distance;
+                                            minLocatedSupermarketLocation = SupermarketLatLng;
+                                            nearestSupermarket = detailsPacks.get(x).getS_name();
+                                        }else{
+                                            if(distance < minDistance){
+                                            minDistance = distance;
+                                            minLocatedSupermarketLocation = SupermarketLatLng;
+                                            nearestSupermarket = detailsPacks.get(x).getS_name();
+                                            }
+                                        }
+                                        counter++;
+                                    }
+
+                                    Toast.makeText(Locate_supermarket.this,"Nearest supermarket: "+nearestSupermarket+
+                                    "\nBy distance: "+minDistance+"\nAt Lat: "+minLocatedSupermarketLocation.latitude,Toast.LENGTH_LONG).show();
+                                    //
+                                    fromLatitude = userLocation.latitude;
+                                    fromLongitude =userLocation.longitude;
+                                    toLatitude = minLocatedSupermarketLocation.latitude;
+                                    toLongitude = minLocatedSupermarketLocation.longitude;
+                                    getDirection();
+                                    break;
+                                }
                             }
                            // criteria = adapterView.getItemAtPosition(i).toString();
                         }
@@ -321,4 +375,170 @@ public class Locate_supermarket extends FragmentActivity {
 
         }
     }
+
+
+
+    public LatLng getUserLocation(){
+        LatLng latLng = null;
+        MyGPSTracker gps;
+        double latitude;
+        double longitude;
+        gps = new MyGPSTracker(Locate_supermarket.this);
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+            latLng = new LatLng(0.3476,32.5825);
+            // \n is for new line
+            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+        return  latLng;
+    }
+
+    public String makeURL (double sourcelat, double sourcelog, double destlat, double destlog ){
+        StringBuilder urlString = new StringBuilder();
+        urlString.append("https://maps.googleapis.com/maps/api/directions/json");
+        urlString.append("?origin=");// from
+        urlString.append(Double.toString(sourcelat));
+        urlString.append(",");
+        urlString
+                .append(Double.toString( sourcelog));
+        urlString.append("&destination=");// to
+        urlString
+                .append(Double.toString( destlat));
+        urlString.append(",");
+        urlString.append(Double.toString(destlog));
+        urlString.append("&sensor=false&mode=driving&alternatives=true");
+        urlString.append("&key=AIzaSyCeka0OBJx-fTrPqaqsIpPd57NrxN1t8BU");
+        return urlString.toString();
+    }
+
+    private void getDirection(){
+        //Getting the URL
+        String url = makeURL(fromLatitude, fromLongitude, toLatitude, toLongitude);
+
+        //Showing a dialog till we get the route
+        final ProgressDialog loading = ProgressDialog.show(this, "Getting Route", "Please wait...", false, false);
+
+        //Creating a string request
+        StringRequest stringRequest = new StringRequest(url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        loading.dismiss();
+                        //Calling the method drawPath to draw the path
+                        drawPath(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loading.dismiss();
+                    }
+                });
+
+        //Adding the request to request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
+    //The parameter is the server response
+    public void drawPath(String  result) {
+        //Getting both the coordinates
+        LatLng from = new LatLng(fromLatitude,fromLongitude);
+        LatLng to = new LatLng(toLatitude,toLongitude);
+
+        //Calculating the distance in meters
+        Double distance = SphericalUtil.computeDistanceBetween(from, to);
+
+        //Displaying the distance
+        Toast.makeText(this,String.valueOf(distance+" Meters"),Toast.LENGTH_SHORT).show();
+
+
+        try {
+            //Parsing json
+            final JSONObject json = new JSONObject(result);
+            JSONArray routeArray = json.getJSONArray("routes");
+            JSONObject routes = routeArray.getJSONObject(0);
+            JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
+            String encodedString = overviewPolylines.getString("points");
+            List<LatLng> list = decodePoly(encodedString);
+            Polyline line = mMap.addPolyline(new PolylineOptions()
+                            .addAll(list)
+                            .width(20)
+                            .color(Color.RED)
+                            .geodesic(true)
+            );
+            line.setVisible(true);
+            LatLng lat = new LatLng(fromLatitude,fromLongitude);
+            LatLng lat2 = new LatLng(toLatitude,toLongitude);
+            mMap.addMarker(new MarkerOptions().position(lat).title("You").icon(BitmapDescriptorFactory.fromResource(R.drawable.user_image)));
+            mMap.addMarker(new MarkerOptions().position(lat2).title("Nearest supermarket"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, 15f));
+
+        }
+        catch (JSONException e) {
+
+        }
+    }
+
+    private List<LatLng> decodePoly(String encoded) {
+        List<LatLng> poly = new ArrayList<LatLng>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng( (((double) lat / 1E5)),
+                    (((double) lng / 1E5) ));
+            poly.add(p);
+        }
+
+        return poly;
+    }
+
+    public Bitmap getMarkerImage(){
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        Bitmap bmp = Bitmap.createBitmap(80, 80, conf);
+        Canvas canvas1 = new Canvas(bmp);
+
+// paint defines the text color, stroke width and size
+        Paint color = new Paint();
+        color.setTextSize(35);
+        color.setColor(Color.BLACK);
+
+// modify canvas
+        canvas1.drawBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.user_icon), 0,0, color);
+        canvas1.drawText("You", 30, 40, color);
+        return  bmp;
+    }
+
 }
