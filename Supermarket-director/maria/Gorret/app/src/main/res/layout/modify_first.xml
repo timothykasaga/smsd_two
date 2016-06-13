@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical"
+    tools:context="com.victoria.timothykasaga.gorret.Modify_first">
+    <include android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/toolbar" />
+    <ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:padding="5.0dip"
+            android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <TextView android:textSize="15.0dip" android:textStyle="bold"
+                android:gravity="left" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_margin="5.0dip"
+                android:text="Supermarket details" />
+            <LinearLayout android:orientation="horizontal" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:textSize="15.0dip" android:id="@+id/edt_mod_sdname"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:hint="Supermarket Name" android:singleLine="true" />
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:textSize="15.0dip" android:id="@+id/edt_mod_sdweb"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:hint="Website" android:singleLine="true" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:textSize="15.0dip" android:id="@+id/edt_mod_sdema"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:hint="Email" android:singleLine="true" android:inputType="textEmailAddress" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:textSize="15.0dip" android:id="@+id/edt_mod_sdtel"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:hint="Telephone" android:singleLine="true" android:inputType="phone" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:padding="5.0dip"
+                android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <EditText android:textSize="15.0dip" android:id="@+id/edt_mod_sddes"
+                    android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:hint="Brief Description" android:maxLines="3" android:minLines="3"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/rgSaveOption">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dont save, go to product list"
+                    android:id="@+id/rbdontsave"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save and go to product list"
+                    android:id="@+id/rbsave"
+                    android:checked="false" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel and go back"
+                    android:id="@+id/rbcancel"
+                    android:checked="false" />
+            </RadioGroup>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proceed"
+                android:id="@+id/btn_proceed" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

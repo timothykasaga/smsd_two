@@ -1,5 +1,6 @@
 package com.victoria.timothykasaga.gorret;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -44,6 +45,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,10 @@ public class Locate_supermarket extends FragmentActivity {
     //From -> the first coordinate from where we need to calculate the distance
     private double fromLongitude;
     private double fromLatitude;
+    private double shortest_distance_km= 0.0;
+    private String nearest_sm_contact ="";
+    String nearest_sm = "";
+    String supermarket_distances ="";
 
     //To -> the second coordinate to where we need to calculate the distance
     private double toLongitude;
@@ -327,23 +334,29 @@ public class Locate_supermarket extends FragmentActivity {
 
                                         //Calculating the distance in meters
                                         double distance = SphericalUtil.computeDistanceBetween(userLocation, SupermarketLatLng);
+
+                                        supermarket_distances = supermarket_distances+"\n"+detailsPacks.get(x).getS_name()+"Distance in km"+distance/1000;
+
                                         if(counter == 0){
                                             minDistance = distance;
                                             minLocatedSupermarketLocation = SupermarketLatLng;
                                             nearestSupermarket = detailsPacks.get(x).getS_name();
+                                            nearest_sm_contact = detailsPacks.get(x).getS_phone();
                                         }else{
                                             if(distance < minDistance){
                                             minDistance = distance;
                                             minLocatedSupermarketLocation = SupermarketLatLng;
                                             nearestSupermarket = detailsPacks.get(x).getS_name();
+                                            nearest_sm_contact = detailsPacks.get(x).getS_phone();
                                             }
                                         }
                                         counter++;
                                     }
 
-                                    Toast.makeText(Locate_supermarket.this,"Nearest supermarket: "+nearestSupermarket+
-                                    "\nBy distance: "+minDistance+"\nAt Lat: "+minLocatedSupermarketLocation.latitude,Toast.LENGTH_LONG).show();
-                                    //
+                                    nearest_sm = nearestSupermarket;
+                                    shortest_distance_km = minDistance/1000;
+
+
                                     fromLatitude = userLocation.latitude;
                                     fromLongitude =userLocation.longitude;
                                     toLatitude = minLocatedSupermarketLocation.latitude;
@@ -390,7 +403,8 @@ public class Locate_supermarket extends FragmentActivity {
 
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
-            latLng = new LatLng(0.3476,32.5825);
+            //latLng = new LatLng(0.3476,32.5825);
+            latLng = new LatLng(latitude,longitude);
             // \n is for new line
             Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
         }else{
@@ -461,7 +475,7 @@ public class Locate_supermarket extends FragmentActivity {
         Double distance = SphericalUtil.computeDistanceBetween(from, to);
 
         //Displaying the distance
-        Toast.makeText(this,String.valueOf(distance+" Meters"),Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this,String.valueOf(distance+" Meters"),Toast.LENGTH_SHORT).show();
 
 
         try {
@@ -481,8 +495,11 @@ public class Locate_supermarket extends FragmentActivity {
             line.setVisible(true);
             LatLng lat = new LatLng(fromLatitude,fromLongitude);
             LatLng lat2 = new LatLng(toLatitude,toLongitude);
-            mMap.addMarker(new MarkerOptions().position(lat).title("You").icon(BitmapDescriptorFactory.fromResource(R.drawable.user_image)));
-            mMap.addMarker(new MarkerOptions().position(lat2).title("Nearest supermarket"));
+            mMap.addMarker(new MarkerOptions().position(lat).title("Your location").icon(BitmapDescriptorFactory.fromResource(R.drawable.user_image)));
+
+
+            mMap.addMarker(new MarkerOptions().position(lat2).
+                    title(nearest_sm + " -> " + String.valueOf(formatNumber(shortest_distance_km) + " km")).snippet(nearest_sm_contact));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, 15f));
 
         }
@@ -539,6 +556,14 @@ public class Locate_supermarket extends FragmentActivity {
                 R.drawable.user_icon), 0,0, color);
         canvas1.drawText("You", 30, 40, color);
         return  bmp;
+    }
+
+    public double formatNumber(double number){
+        double num1;
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
+        num1 = Double.parseDouble(df.format(number));
+        return  num1;
     }
 
 }

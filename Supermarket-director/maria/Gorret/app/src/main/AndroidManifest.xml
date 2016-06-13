@@ -77,6 +77,14 @@
             android:name=".Display_plan"
             android:label="@string/title_activity_display_plan" >
         </activity>
+        <activity
+            android:name=".Modify_first"
+            android:label="@string/title_activity_modify_first" >
+        </activity>
+        <activity
+            android:name=".Modify_second"
+            android:label="@string/title_activity_modify_second" >
+        </activity>
     </application>
 
 </manifest>

@@ -12,6 +12,9 @@
         <item name="locate prdt">Locate product</item>
         <item name="compare">Compare prices</item>
     </array>
+    <array name="sm_id">
+        <item name="choose">Choose supermarket id</item>
+    </array>
     <array name="search">
         <item name="home">Name</item>
         <item name="locate sm">Location</item>
@@ -27,5 +30,7 @@
     <string name="title_activity_modification_page">ModificationPage</string>
     <string name="uronfloor">You\'re on floor:</string>
     <string name="title_activity_display_plan">Display_plan</string>
+    <string name="title_activity_modify_first">Modify_first</string>
+    <string name="title_activity_modify_second">Modify_second</string>
 
 </resources>

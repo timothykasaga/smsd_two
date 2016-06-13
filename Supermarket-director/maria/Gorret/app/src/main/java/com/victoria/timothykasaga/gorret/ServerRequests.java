@@ -27,7 +27,7 @@ public class ServerRequests {
     //public static final String SERVER2 = "http://timothykasaga.net16.net/";
     public static final String SERVER2 = "http://192.168.43.73:80/";
 
-    //public static final String SERVER2 ="http://10.0.3.2/";
+   // public static final String SERVER2 ="http://10.0.3.2/";
     ProgressDialog progressDialog;
     Context context;
     public ServerRequests(Context paramContext)
@@ -78,6 +78,390 @@ public class ServerRequests {
                                 String user_cell,String productname) {
             progressDialog.show();
             new getImageUrlAsnycTasks(locate_product,supermkt_id,user_floor,user_cell,productname).execute();
+    }
+
+    public void retriveSupermarketDetails(String admin, String supermarket_id, Modify_first modify_first) {
+        progressDialog.show();
+        new retriveSupermarketDetailsAsnycTasks(modify_first,admin,supermarket_id).execute();
+    }
+
+    public void retriveAdminSupermktIds(String user, ModificationPage modificationPage) {
+            progressDialog.show();
+        new RetriveAdminSupermktIdsAsnycTasks(modificationPage,user).execute();
+    }
+
+    public void saveModifiedGeneralDetails(String admin, String supermarket_id, DetailsPack detailsPack, Modify_first modify_first) {
+        progressDialog.show();
+        new saveModifiedGeneralDetailsAsnycTasks(modify_first,admin,supermarket_id,detailsPack).execute();
+
+    }
+
+    public void returnProductList(Modify_second modify_second, String adminName, String supermarket_id) {
+            progressDialog.show();
+            new returnProductListAsnycTasks(modify_second,adminName,supermarket_id).execute();
+
+     }
+
+    public void updateProductList(String supermarket_id, ArrayList<Product> arrayList_prodts, Modify_second modify_second) {
+          progressDialog.show();
+        new updateProductListAsnycTasks(supermarket_id,arrayList_prodts,modify_second).execute();
+
+      }
+
+    //update product list
+    private class updateProductListAsnycTasks extends AsyncTask<Void,Void,String>{
+        String supermarket_id; ArrayList<Product> arrayList_prodts; Modify_second modify_second;
+
+        private updateProductListAsnycTasks(String supermarket_id, ArrayList<Product> arrayList_prodts, Modify_second modify_second) {
+            this.supermarket_id = supermarket_id;
+            this.arrayList_prodts = arrayList_prodts;
+            this.modify_second =modify_second;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = "";
+            try {
+                StringBuilder content = new StringBuilder();
+                // URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+                URL url = new URL(SERVER2+"smsd/updateProductList.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
+                JSONObject  listArray = new JSONObject();
+                Product product;
+                int prodt_no = 0;
+                for (int i = 0; i < arrayList_prodts.size(); i++) {
+                    product = arrayList_prodts.get(i);
+                    JSONObject prodtArray = new JSONObject();
+                    prodtArray.put("name", product.name);
+                    prodtArray.put("id", product.prodt_id);
+                    prodtArray.put("cost", product.unit_cost);
+                    prodtArray.put("units", product.units);
+                    prodtArray.put("sec", product.section_name);
+                    listArray.put(i+"",prodtArray);
+                    prodt_no++;
+                }
+
+
+                String strProdtList = listArray.toString();
+
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("SupermarketID",supermarket_id)
+                        .appendQueryParameter("ProductList",strProdtList)
+                        .appendQueryParameter("Product_num", String.valueOf(prodt_no));
+
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String line;
+                // read from the urlconnection via the bufferedreader
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    content.append(line + "\n");
+                }
+                bufferedReader.close();
+                result = content.toString();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(!s.equals("")){
+                modify_second.continueExecutionAfterUpdateProdtList(s, modify_second);
+            }
+
+        }
+    }
+
+
+
+    //return product list of supermarket_id
+    private class returnProductListAsnycTasks extends AsyncTask<Void,Void,String>{
+        Modify_second modify_second;
+        String supermarket_id;
+        String name;
+
+        private returnProductListAsnycTasks(Modify_second modify_second, String name, String supermarket_id) {
+            this.modify_second = modify_second;
+            this.name = name;
+            this.supermarket_id =supermarket_id;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = "";
+            try {
+                StringBuilder content = new StringBuilder();
+                // URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+                URL url = new URL(SERVER2+"smsd/returnProductList.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("Name",name)
+                        .appendQueryParameter("SupermarketID",supermarket_id);
+
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String line;
+                // read from the urlconnection via the bufferedreader
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    content.append(line + "\n");
+                }
+                bufferedReader.close();
+                result = content.toString();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(!s.equals("")){
+                modify_second.continueExecution(s,modify_second);
+            }
+
+        }
+    }
+
+
+
+    //Save general details
+    private class saveModifiedGeneralDetailsAsnycTasks extends AsyncTask<Void,Void,String>{
+        Modify_first modify_first;
+        String supermarket_id;
+        String admin;
+        DetailsPack detailsPack;
+
+        private saveModifiedGeneralDetailsAsnycTasks(Modify_first modify_first, String admin, String supermarket_id,DetailsPack detailsPack) {
+            this.modify_first = modify_first;
+            this.admin = admin;
+            this.supermarket_id =supermarket_id;
+            this.detailsPack = detailsPack;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = "";
+            try {
+                StringBuilder content = new StringBuilder();
+                // URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+                URL url = new URL(SERVER2+"smsd/saveModifiedGeneralDetails.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("Name",admin)
+                        .appendQueryParameter("SupermarketID",supermarket_id)
+                        .appendQueryParameter("SupermarketName",detailsPack.getS_name())
+                        .appendQueryParameter("Website", detailsPack.getS_website())
+                        .appendQueryParameter("Email", detailsPack.getS_email())
+                        .appendQueryParameter("Tel", detailsPack.getS_phone())
+                        .appendQueryParameter("Desc", detailsPack.getS_desc());
+
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String line;
+                // read from the urlconnection via the bufferedreader
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    content.append(line + "\n");
+                }
+                bufferedReader.close();
+                result = content.toString();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(!s.equals("")){
+                modify_first.continueExecutionAfterSave(s, modify_first, supermarket_id);
+            }
+
+        }
+    }
+
+
+
+
+
+    //retrive general details
+private class retriveSupermarketDetailsAsnycTasks extends AsyncTask<Void,Void,String>{
+    Modify_first modify_first;
+    String supermarket_id;
+    String name;
+
+    private retriveSupermarketDetailsAsnycTasks(Modify_first modify_first, String name, String supermarket_id) {
+        this.modify_first = modify_first;
+        this.name = name;
+        this.supermarket_id =supermarket_id;
+    }
+
+    @Override
+    protected String doInBackground(Void... voids) {
+        String result = "";
+        try {
+            StringBuilder content = new StringBuilder();
+            // URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+            URL url = new URL(SERVER2+"smsd/retriveSupermarketDetails.php");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+            urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+
+            Uri.Builder builder = new Uri.Builder().appendQueryParameter("Name",name)
+                    .appendQueryParameter("SupermarketID",supermarket_id);
+
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = urlConnection.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            String line;
+            // read from the urlconnection via the bufferedreader
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                content.append(line + "\n");
+            }
+            bufferedReader.close();
+            result = content.toString();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        progressDialog.dismiss();
+        if(!s.equals("")){
+            modify_first.continueExecution(s,modify_first);
+        }
+
+    }
+}
+
+
+
+    //retrive Supermarket ids for admin
+    private class RetriveAdminSupermktIdsAsnycTasks extends AsyncTask<Void,Void,String>{
+        ModificationPage modificationPage;
+        String name;
+
+        private RetriveAdminSupermktIdsAsnycTasks(ModificationPage modificationPage, String name) {
+            this.modificationPage = modificationPage;
+            this.name = name;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = "";
+            try {
+                StringBuilder content = new StringBuilder();
+                // URL url = new URL("http://10.0.3.2/smsd/searchByName.php");
+                URL url = new URL(SERVER2+"smsd/retriveAdminSupermktIds.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+                urlConnection.setDoInput(true);
+                urlConnection.setDoOutput(true);
+
+                Uri.Builder builder = new Uri.Builder().appendQueryParameter("Name",name);
+
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = urlConnection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String line;
+                // read from the urlconnection via the bufferedreader
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    content.append(line + "\n");
+                }
+                bufferedReader.close();
+                result = content.toString();
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(!s.equals("")){
+                modificationPage.continueExecution(s,modificationPage);
+            }
+
+        }
     }
 
     //class fetchImageURl
